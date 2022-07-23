@@ -18,6 +18,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var long: Double = 0.0
     var strLocation = ""
     
+    var isPasting = false
+    
     let pasterboard = UIPasteboard.general
     
     override func viewDidLoad() {
@@ -62,10 +64,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc func didInfoView(sender: UITapGestureRecognizer) {
+        if self.isPasting {
+            return
+        }
+        
+        self.isPasting = true
         pasterboard.string = self.strLocation
         self.LocationDescription.text = "Copied!"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.LocationDescription.text = self.strLocation
+            self.isPasting = false
         }
         
     }
